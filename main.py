@@ -119,11 +119,4 @@ def get_movies_by_type_year_genre(movie_type, release_year, genre):
     return data
 
 
-def format_movie_data(data):
-    formatted_data = []
-    for title, description in data:
-        formatted_data.append({
-            "title": title,
-            "description": description
-        })
-    return formatted_data
+
