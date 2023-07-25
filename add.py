@@ -1,7 +1,6 @@
-
 from flask import Flask, jsonify
 
-from main import get_movie_data, get_movies_by_year_range, get_movies_by_rating, get_movies_by_genre
+from main import get_movie_data, get_movies_by_year_range, get_movies_by_rating, get_movies_by_genre, format_movie_data
 
 app = Flask(__name__)
 
@@ -47,21 +46,14 @@ def adult_rating_movies():
     return jsonify(formatted_data)
 
 
-def format_movie_data(data):
-    formatted_data = []
-    for title, description in data:
-        formatted_data.append({
-            "title": title,
-            "description": description
-        })
-    return formatted_data
-
-
 @app.route('/genre/<genre>')
 def movies_by_genre(genre):
     movie_data = get_movies_by_genre(genre)
     formatted_data = format_movie_data(movie_data)
     return jsonify(formatted_data)
+
+
+
 
 
 if __name__ == '__main__':

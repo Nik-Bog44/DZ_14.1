@@ -2,7 +2,7 @@ import sqlite3
 
 
 def get_movie_data(title):
-    con = sqlite3.connect("../netflix.db")
+    con = sqlite3.connect("netflix.db")
     cur = con.cursor()
     sqlite_query = f"SELECT title, country, release_year, listed_in, description " \
                    f"FROM netflix WHERE title LIKE '%{title}%' " \
@@ -28,7 +28,7 @@ def format_movie_data(data):
 
 
 def get_movies_by_year_range(start_year, end_year):
-    con = sqlite3.connect("../netflix.db")
+    con = sqlite3.connect("netflix.db")
     cur = con.cursor()
     sqlite_query = "SELECT title, release_year FROM netflix WHERE release_year BETWEEN 2020 AND 2021 LIMIT 100"
     cur.execute(sqlite_query, (start_year, end_year))
@@ -38,7 +38,7 @@ def get_movies_by_year_range(start_year, end_year):
 
 
 def get_movies_by_rating(rating_group):
-    con = sqlite3.connect("../netflix.db")
+    con = sqlite3.connect("netflix.db")
     cur = con.cursor()
     sqlite_query = "SELECT title, rating, description FROM netflix WHERE rating IN ({})".format(
         ','.join('?' * len(rating_group)))
@@ -52,15 +52,15 @@ def format_movie_data(data):
     formatted_data = []
     for title, rating, description in data:
         formatted_data.append({
-            "title": title,
+            "title": data[0],
             "rating": rating,
-            "description": description
+            "description": data[4]
         })
     return formatted_data
 
 
 def get_movies_by_genre(genre):
-    con = sqlite3.connect("../netflix.db")
+    con = sqlite3.connect("netflix.db")
     cur = con.cursor()
     sqlite_query = "SELECT title, description FROM netflix " \
                    "WHERE genre LIKE '%' || ? || '%' " \
@@ -72,7 +72,7 @@ def get_movies_by_genre(genre):
 
 
 def get_actors_in_pair(actor1, actor2):
-    con = sqlite3.connect("../netflix.db")
+    con = sqlite3.connect("netflix.db")
     cur = con.cursor()
 
     # Находим всех актеров, которые снимались с actor1
@@ -110,9 +110,9 @@ def get_actors_in_pair(actor1, actor2):
 
 
 def get_movies_by_type_year_genre(movie_type, release_year, genre):
-    con = sqlite3.connect("../netflix.db")
+    con = sqlite3.connect("netflix.db")
     cur = con.cursor()
-    sqlite_query = "SELECT title, description FROM netflix WHERE type = ? AND release_year = ? AND genre LIKE '%' || ? || '%'"
+    sqlite_query = "SELECT title, release_year FROM netflix WHERE release_year BETWEEN ? AND ? LIMIT 100"
     cur.execute(sqlite_query, (movie_type, release_year, genre))
     data = cur.fetchall()
     con.close()
