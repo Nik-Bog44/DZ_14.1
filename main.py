@@ -30,7 +30,7 @@ def format_movie_data(data):
 def get_movies_by_year_range(start_year, end_year):
     con = sqlite3.connect("netflix.db")
     cur = con.cursor()
-    sqlite_query = "SELECT title, release_year FROM netflix WHERE release_year BETWEEN 2020 AND 2021 LIMIT 100"
+    sqlite_query = "SELECT title, release_year FROM netflix WHERE release_year BETWEEN ? AND ? LIMIT 100"
     cur.execute(sqlite_query, (start_year, end_year))
     data = cur.fetchall()
     con.close()
@@ -40,29 +40,19 @@ def get_movies_by_year_range(start_year, end_year):
 def get_movies_by_rating(rating_group):
     con = sqlite3.connect("netflix.db")
     cur = con.cursor()
-    sqlite_query = "SELECT title, rating, description FROM netflix WHERE rating IN ({})".format(
-        ','.join('?' * len(rating_group)))
+    sqlite_query = "SELECT title, rating, description " \
+                   "FROM netflix WHERE rating " \
+                   "IN ({})".format(','.join('?' * len(rating_group)))
     cur.execute(sqlite_query, rating_group)
     data = cur.fetchall()
     con.close()
     return data
 
 
-def format_movie_data(data):
-    formatted_data = []
-    for title, rating, description in data:
-        formatted_data.append({
-            "title": data[0],
-            "rating": rating,
-            "description": data[4]
-        })
-    return formatted_data
-
-
 def get_movies_by_genre(genre):
     con = sqlite3.connect("netflix.db")
     cur = con.cursor()
-    sqlite_query = "SELECT title, description FROM netflix " \
+    sqlite_query = "SELECT title, description, genre FROM netflix " \
                    "WHERE genre LIKE '%' || ? || '%' " \
                    "ORDER BY release_year DESC LIMIT 10"
     cur.execute(sqlite_query, (genre,))
@@ -117,6 +107,3 @@ def get_movies_by_type_year_genre(movie_type, release_year, genre):
     data = cur.fetchall()
     con.close()
     return data
-
-
-

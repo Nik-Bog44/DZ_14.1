@@ -18,39 +18,49 @@ def movie_details(title):
 @app.route('/movie/<int:start_year>/to/<int:end_year>')
 def movies_by_year_range(start_year, end_year):
     movie_data = get_movies_by_year_range(start_year, end_year)
-    formatted_data = format_movie_data(movie_data)
-    return jsonify(formatted_data)
+    data = []
+    for elem in movie_data:
+        data.append({'title': elem[0], 'year': elem[1]})
+    return jsonify(data)
 
 
 @app.route('/rating/children')
 def children_rating_movies():
     rating_group = ['G']
     movie_data = get_movies_by_rating(rating_group)
-    formatted_data = format_movie_data(movie_data)
-    return jsonify(formatted_data)
+    data = []
+    for elem in movie_data:
+        data.append({'title': elem[0], 'rating': elem[1], 'description': elem[2]})
+    return jsonify(data)
 
 
 @app.route('/rating/family')
 def family_rating_movies():
     rating_group = ['G', 'PG', 'PG-13']
     movie_data = get_movies_by_rating(rating_group)
-    formatted_data = format_movie_data(movie_data)
-    return jsonify(formatted_data)
+    data = []
+    for elem in movie_data:
+        data.append({'title': elem[0], 'rating': elem[1], 'description': elem[2]})
+    return jsonify(data)
 
 
 @app.route('/rating/adult')
 def adult_rating_movies():
     rating_group = ['R', 'NC-17']
     movie_data = get_movies_by_rating(rating_group)
-    formatted_data = format_movie_data(movie_data)
-    return jsonify(formatted_data)
+    data = []
+    for elem in movie_data:
+        data.append({'title': elem[0], 'rating': elem[1], 'description': elem[2]})
+    return jsonify(data)
 
 
 @app.route('/genre/<genre>')
 def movies_by_genre(genre):
     movie_data = get_movies_by_genre(genre)
-    formatted_data = format_movie_data(movie_data)
-    return jsonify(formatted_data)
+    data = []
+    for elem in movie_data:
+        data.append({'title': elem[0], 'description': elem[1], 'genre': elem[2]})
+    return jsonify(data)
 
 
 
